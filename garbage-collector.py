@@ -26,7 +26,10 @@ class Registry(object):
     def __init__(self, deployment, namespace):
         self.deployment = deployment
         self.namespace = namespace
-        config.load_kube_config()
+        try:
+            config.load_kube_config()
+        except:
+            config.load_incluster_config()
         self.api = client.AppsV1Api()
 
     def _get_deployment(self):
