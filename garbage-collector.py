@@ -51,10 +51,8 @@ class Command(object):
 
     def run(self, timeout):
         def target():
-            self.process = subprocess.Popen(self.cmd, shell=True, preexec_fn=os.setsid, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            process_output, _ = self.process.communicate()
-            for line in str(process_output).split('\n'):
-                self.log.info(str(line))
+            self.process = subprocess.Popen(self.cmd, shell=True, preexec_fn=os.setsid)
+            self.process.communicate()
 
         thread = threading.Thread(target=target)
         thread.start()
