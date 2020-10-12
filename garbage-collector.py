@@ -73,7 +73,7 @@ def main():
     try:
         registry = Registry('registry', 'docker')
         registry.readOnly(True)
-        Command('/bin/registry garbage-collect --delete-untagged=true /etc/docker/registry/config.yml', int(12*60*60))
+        Command('/bin/registry garbage-collect --delete-untagged=true /etc/docker/registry/config.yml').run(int(12*60*60))
         registry.readOnly(False)
     except Exception as e:
         print(e)
