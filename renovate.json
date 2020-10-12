@@ -1,0 +1,16 @@
+{
+  "extends": [
+    "config:base",
+    ":semanticCommitTypeAll(fix)"
+  ],
+  "assignees": [
+    "gmelillo"
+  ],
+  "labels": [
+    "renovate",
+    "dependencies"
+  ],
+  "prHourlyLimit": 0,
+  "masterIssue": true,
+  "masterIssueAutoclose": true
+}
