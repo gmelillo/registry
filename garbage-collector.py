@@ -72,8 +72,10 @@ class Registry(object):
 def main():
     try:
         registry = Registry('registry', 'docker')
+        print("Put registry in read only mode")
         registry.readOnly(True)
         Command('/bin/registry garbage-collect --delete-untagged=true /etc/docker/registry/config.yml').run(int(12*60*60))
+        print("Put registry in read/write mode")
         registry.readOnly(False)
     except Exception as e:
         print(e)
