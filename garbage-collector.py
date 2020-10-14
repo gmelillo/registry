@@ -5,43 +5,23 @@ from io import StringIO
 import logging
 import json
 import sys
+import argparse
+
+sys.path.insert(0, os.path.join(os.path.realpath(os.path.split(sys.modules['__main__'].__file__)[0]), 'lib'))
+
+import jsonlogs
 
 LOG = logging.getLogger()
 
-def setup_logging():
-    class JSONLogFormatter(logging.Formatter):
-        def __init__(self):
-            pass
-        def format(self, record):
-            ret = {}
-            ret.update(record.__dict__)
-            ret['message'] = record.getMessage()
-            for i in ('exc_info', 'exc_text', 'args', 'relativeCreated', 'name', 'thread',
-                      'msecs', 'pathname', 'processName', 'levelno', 'msg', 'stack_info'):
-                if i in ret:
-                    del ret[i]
-            ret['level'] = ret['levelname']
-            del ret['levelname']
-            ret['timestamp'] = int(ret['created'] * 1000)
-            del ret['created']
-            if record.exc_info:
-                if not record.exc_text:
-                    record.exc_text = self.formatException(record.exc_info)
-            if record.exc_text:
-                try:
-                    ret['message'] += record.exc_text
-                except UnicodeError:
-                    # see python's logging formatter for an explanation of this
-                    ret['message'] += record.exc_text.decode(sys.getfilesystemencoding(), 'replace')
-            return json.dumps(ret)
+def parse_args():
+    parser = argparse.ArgumentParser(description='Preparation for docker registry garbage collector.')
+    parser.add_argument('-n', '--namespace', default='docker', help='namespace having docker registry installed')
+    parser.add_argument('-d', '--deployment', default='registry', help='docker registry eployment name')
+    parser.add_argument('-t', '--timeout', default=int(12*60*60), type=int, help='timeout for running the garbage collector')
 
-    rootLogger = logging.getLogger()
-    hnd = logging.StreamHandler(sys.stdout)
-    hnd.setFormatter(JSONLogFormatter())
-    rootLogger.setLevel(20)
-    hnd.setLevel(20)
-    rootLogger.addHandler(hnd)
+    args = parser.parse_args()
 
+    return args
 
 class Command(object):
     def __init__(self, cmd):
@@ -113,13 +93,14 @@ class Registry(object):
 
 
 def main():
+    jsonlogs.setup_logging()
+    args = parse_args()
+
     try:
-        registry = Registry('registry', 'docker')
-        LOG.info("Put registry in read only mode")
+        registry = Registry(args.deployment, args.namespace)
+        
         registry.readOnly(True)
-        LOG.info("Running garbage collector")
-        Command('/bin/registry garbage-collect --delete-untagged=true /etc/docker/registry/config.yml').run(int(12*60*60))
-        LOG.info("Put registry in read/write mode")
+        Command('/bin/registry garbage-collect --delete-untagged=true /etc/docker/registry/config.yml').run(args.timeout)
         registry.readOnly(False)
     except Exception as e:
         LOG.error(e)
@@ -127,5 +108,4 @@ def main():
 
 
 if __name__ == "__main__":
-    setup_logging()
     main()
