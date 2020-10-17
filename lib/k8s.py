@@ -33,7 +33,7 @@ class Deployment(KubeObj):
         except ApiException as e:
             self.log.critical(f'unable to find deployment {self.deployment} in namespace {self.namespace}; {e.reason}', exc_info=True, stack_info=False)
             raise KubeException(f'{e.status}: {e.reason}')
-        except:
+        except Exception as e:
             self.log.critical(f'unable to find deployment {self.deployment} in namespace {self.namespace}', exc_info=True, stack_info=True)
             raise KubeException(f'{e.status}: {e.reason}')
 
