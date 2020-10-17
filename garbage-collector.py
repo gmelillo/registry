@@ -24,7 +24,13 @@ def parse_args():
     parser.add_argument('-t', '--timeout', default=int(os.environ.get('GARBAGE_COLLECTOR_TIMEOUT', '43200'), base=10), 
                         type=int, help='timeout for running the garbage collector')
     parser.add_argument('--log-format', type=lambda c: jsonlogs.LogFormat[c], choices=list(jsonlogs.LogFormat), 
-                        default=os.environ.get('GARBAGE_COLLECTOR_LOG_FORMAT', 'pretty'), help='Format of the logs.')
+                        default=os.environ.get('GARBAGE_COLLECTOR_LOG_FORMAT', 'pretty'), 
+                        help='Format of the logs.')
+    parser.add_argument('--log-level', type=lambda c: jsonlogs.LogLevel[c], choices=list(jsonlogs.LogLevel), 
+                        default=os.environ.get('GARBAGE_COLLECTOR_LOG_LEVEL', 'info'), 
+                        help='Format of the logs.')
+    parser.add_argument('--graceful-period', default=int(os.environ.get('GARBAGE_COLLECTOR_GRACEFUL_PERIOD', '43200'), base=10),
+                        type=int, help='second allowed for the registry to shutdown correctly before kill')
 
     args = parser.parse_args()
 
@@ -32,14 +38,15 @@ def parse_args():
 
 def main():
     args = parse_args()
-    jsonlogs.setup_logging(args.log_format)
+    jsonlogs.setup_logging(args.log_format, args.log_level)
 
     try:
         registry = Registry(args.deployment, args.namespace)
         
         if not registry.is_readonly:
             registry.readOnly(True)
-        Command('/bin/registry garbage-collect --delete-untagged=true /etc/docker/registry/config.yml').run(args.timeout)
+        Command('/bin/registry garbage-collect --delete-untagged=true /etc/docker/registry/config.yml', 
+                timeout=args.timeout, graceful_period=args.graceful_period).run()
         if registry.is_readonly:
             registry.readOnly(False)
     except Exception as e:

@@ -3,18 +3,34 @@ import sys
 import json
 from enum import Enum
 
+class LogEnum(Enum):
+    def __str__(self) -> str:
+        return str(self.name)
+
 class LogFormat(Enum):
     json = None
     pretty = 4
+
+    @classmethod
+    def favorite(cls):
+        cls.json
+class LogLevel(Enum):
+    critical = logging.CRITICAL
+    fatal = logging.FATAL
+    error = logging.ERROR
+    warning = logging.WARNING
+    info = logging.INFO
+    debug = logging.DEBUG
+    notset = logging.NOTSET
 
     def __str__(self) -> str:
         return str(self.name)
 
     @classmethod
     def favorite(cls):
-        cls.json
+        cls.info
 
-def setup_logging(format: LogFormat):
+def setup_logging(format: LogFormat, log_level: LogLevel):
     class JSONLogFormatter(logging.Formatter):
         def __init__(self):
             pass
@@ -44,6 +60,6 @@ def setup_logging(format: LogFormat):
     rootLogger = logging.getLogger()
     hnd = logging.StreamHandler(sys.stdout)
     hnd.setFormatter(JSONLogFormatter())
-    rootLogger.setLevel(20)
-    hnd.setLevel(20)
+    rootLogger.setLevel(log_level.value)
+    hnd.setLevel(log_level.value)
     rootLogger.addHandler(hnd)

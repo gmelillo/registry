@@ -3,6 +3,7 @@ import logging
 import os
 import signal
 import subprocess
+import shlex
 
 class Command(object):
     def __init__(self, cmd, **kwargs):
@@ -18,7 +19,7 @@ class Command(object):
             try:
                 self.process = subprocess.Popen(self.cmd, shell=False, preexec_fn=os.setsid, stdout=subprocess.PIPE)
             except Exception as e:
-                self.log.error(f'unable to execute the garbage collector: {e.__str__()}')
+                self.log.error(f'unable to execute the command: {e.__str__()}')
                 return
             while True:
                 output = self.process.stdout.readline()
@@ -27,6 +28,8 @@ class Command(object):
                 if self.process.poll() is not None:
                     break
             return self.process.poll()
+        
+        self.log.debug(f'Executing command {shlex.split(self.cmd)[0]} with {self.timeout}s of timeout and {self.graceful_period}s of grace period')
 
         thread = threading.Thread(target=target)
         thread.start()
@@ -38,3 +41,5 @@ class Command(object):
             if thread.is_alive():
                 os.killpg(self.process.pid, signal.SIGKILL)
                 thread.join()
+        
+        self.log.debug(f'Ececution of command {shlex.split(self.cmd)[0]} terminated')
