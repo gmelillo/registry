@@ -7,14 +7,14 @@ class LogEnum(Enum):
     def __str__(self) -> str:
         return str(self.name)
 
-class LogFormat(Enum):
+class LogFormat(LogEnum):
     json = None
     pretty = 4
 
     @classmethod
     def favorite(cls):
         cls.json
-class LogLevel(Enum):
+class LogLevel(LogEnum):
     critical = logging.CRITICAL
     fatal = logging.FATAL
     error = logging.ERROR
