@@ -28,7 +28,7 @@ def parse_args():
     parser.add_argument('--log-level', type=lambda c: jsonlogs.LogLevel[c], choices=list(jsonlogs.LogLevel), 
                         default=os.environ.get('GARBAGE_COLLECTOR_LOG_LEVEL', 'info'), 
                         help='Format of the logs.')
-    parser.add_argument('--graceful-period', default=int(os.environ.get('GARBAGE_COLLECTOR_GRACEFUL_PERIOD', '43200'), base=10),
+    parser.add_argument('--graceful-period', default=int(os.environ.get('GARBAGE_COLLECTOR_GRACEFUL_PERIOD', '120'), base=10),
                         type=int, help='second allowed for the registry to shutdown correctly before kill')
 
     args = parser.parse_args()
