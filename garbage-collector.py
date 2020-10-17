@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from enum import Enum
 import os
 import logging
 import sys
