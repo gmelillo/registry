@@ -8,4 +8,6 @@ RUN apk add --no-cache python3 py3-pip && \
     pip3 --no-cache-dir install -U pip && \
     pip3 --no-cache-dir install -r /tmp/requirements.txt
 
+ENV GARBAGE_COLLECTOR_LOG_FORMAT=json
+
 CMD [ "python3", "/garbage-collector.py" ]
