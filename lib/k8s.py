@@ -1,9 +1,16 @@
 import json
 import logging
 from os import name
+import os
+import sys
 from kubernetes import client, config
 from time import time, sleep
 from logging import getLogger
+
+from kubernetes.client.rest import ApiException
+
+class KubeException(Exception):
+    pass
 
 class KubeObj(object):
     def __init__(self) -> None:
@@ -18,12 +25,18 @@ class Deployment(KubeObj):
     def __init__(self, name: str, namespace: str) -> None:
         self.namespace = namespace
         self.deployment = name
-        logging.info(f'Initializing KubeObj()')
         super().__init__()
+        self.data
 
     @property
     def data(self):
-        return self.api.read_namespaced_deployment(self.deployment, self.namespace)
+        try:
+            return self.api.read_namespaced_deployment(self.deployment, self.namespace)
+        except ApiException as e:
+            self.log.critical(f'unable to find deployment {self.deployment} in namespace {self.namespace}; {e.reason}', exc_info=True, stack_info=False)
+            raise KubeException(f'{e.status}: {e.reason}')
+        except:
+            self.log.critical(f'unable to find deployment {self.deployment} in namespace {self.namespace}', exc_info=True, stack_info=True)
 
     def wait_for_complete(self, timeout=600):
         start = time()
@@ -48,7 +61,6 @@ class Deployment(KubeObj):
 
 class Registry(Deployment):
     def __init__(self, name, namespace):
-        logging.info(f'Initializing Deployment("{name}", "{namespace}")')
         super().__init__(name, namespace)
 
     @property
