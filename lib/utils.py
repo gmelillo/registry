@@ -12,8 +12,18 @@ class Command(object):
 
     def run(self, timeout):
         def target():
-            self.process = subprocess.Popen(self.cmd, shell=True, preexec_fn=os.setsid)
-            self.process.communicate()
+            try:
+                self.process = subprocess.Popen(self.cmd, shell=False, preexec_fn=os.setsid, stdout=subprocess.PIPE)
+            except Exception as e:
+                self.log.error(f'unable to execute the garbage collector: {e.__str__()}')
+                return
+            while True:
+                output = self.process.stdout.readline()
+                if self.process.poll() is not None:
+                    break
+                if output:
+                    self.log.info(output.strip())
+            return self.process.poll()
 
         thread = threading.Thread(target=target)
         thread.start()
