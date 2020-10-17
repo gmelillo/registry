@@ -1,0 +1,10 @@
+{
+    "release": {
+      "plugins": [
+        "@semantic-release/commit-analyzer"
+      ]
+    },
+    "devDependencies": {
+      "semantic-release": "17.2.1"
+    }
+  }
