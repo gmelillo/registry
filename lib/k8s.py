@@ -1,8 +1,4 @@
 import json
-import logging
-from os import name
-import os
-import sys
 from kubernetes import client, config
 from time import time, sleep
 from logging import getLogger
@@ -26,8 +22,10 @@ class Deployment(KubeObj):
         self.namespace = namespace
         self.deployment = name
         super().__init__()
-        self.data
-
+        d = self.data
+        if d is None:
+            raise KubeException(f'unable to find deployment {self.deployment} in namespace {self.namespace}')
+ 
     @property
     def data(self):
         try:
@@ -37,6 +35,8 @@ class Deployment(KubeObj):
             raise KubeException(f'{e.status}: {e.reason}')
         except:
             self.log.critical(f'unable to find deployment {self.deployment} in namespace {self.namespace}', exc_info=True, stack_info=True)
+            raise KubeException(f'{e.status}: {e.reason}')
+
 
     def wait_for_complete(self, timeout=600):
         start = time()

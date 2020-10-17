@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+from enum import Enum
 import os
 import logging
 import sys
@@ -12,18 +15,24 @@ from utils import Command
 LOG = logging.getLogger()
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Preparation for docker registry garbage collector.')
-    parser.add_argument('-n', '--namespace', default='docker', help='namespace having docker registry installed')
-    parser.add_argument('-d', '--deployment', default='registry', help='docker registry eployment name')
-    parser.add_argument('-t', '--timeout', default=int(12*60*60), type=int, help='timeout for running the garbage collector')
+    parser = argparse.ArgumentParser(description='Preparation for docker registry garbage collector.', 
+                                    formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('-n', '--namespace', default=os.environ.get('GARBAGE_COLLECTOR_NAMESPACE', 'docker'), 
+                        help='namespace having docker registry installed')
+    parser.add_argument('-d', '--deployment', default=os.environ.get('GARBAGE_COLLECTOR_DEPLOYMENT', 'registry'), 
+                        help='docker registry eployment name')
+    parser.add_argument('-t', '--timeout', default=int(os.environ.get('GARBAGE_COLLECTOR_TIMEOUT', '43200'), base=10), 
+                        type=int, help='timeout for running the garbage collector')
+    parser.add_argument('--log-format', type=lambda c: jsonlogs.LogFormat[c], choices=list(jsonlogs.LogFormat), 
+                        default=os.environ.get('GARBAGE_COLLECTOR_LOG_FORMAT', 'pretty'), help='Format of the logs.')
 
     args = parser.parse_args()
 
     return args
 
 def main():
-    jsonlogs.setup_logging()
     args = parse_args()
+    jsonlogs.setup_logging(args.log_format)
 
     try:
         registry = Registry(args.deployment, args.namespace)

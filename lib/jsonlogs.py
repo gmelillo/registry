@@ -1,8 +1,20 @@
 import logging
 import sys
 import json
+from enum import Enum
 
-def setup_logging():
+class LogFormat(Enum):
+    json = None
+    pretty = 4
+
+    def __str__(self) -> str:
+        return str(self.name)
+
+    @classmethod
+    def favorite(cls):
+        cls.json
+
+def setup_logging(format: LogFormat):
     class JSONLogFormatter(logging.Formatter):
         def __init__(self):
             pass
@@ -27,7 +39,7 @@ def setup_logging():
                 except UnicodeError:
                     # see python's logging formatter for an explanation of this
                     ret['message'] += record.exc_text.decode(sys.getfilesystemencoding(), 'replace')
-            return json.dumps(ret)
+            return json.dumps(ret, indent=format.value)
 
     rootLogger = logging.getLogger()
     hnd = logging.StreamHandler(sys.stdout)
