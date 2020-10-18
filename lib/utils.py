@@ -18,7 +18,8 @@ class Command(object):
         def target():
             try:
                 self.process = subprocess.Popen(shlex.split(self.cmd), shell=False, env=os.environ.copy(), 
-                                                preexec_fn=os.setsid, stdout=subprocess.PIPE)
+                                                preexec_fn=os.setsid, stdout=subprocess.PIPE,
+                                                stderr=subprocess.STDOUT)
             except Exception as e:
                 self.log.error(f'unable to execute the command: {e.__str__()}')
                 return
