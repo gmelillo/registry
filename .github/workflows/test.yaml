@@ -1,0 +1,22 @@
+name: Test
+on: [push]
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup Python
+        uses: actions/setup-python@master
+        with:
+          python-version: 3.8
+      - name: Run Tests
+        run: |
+          pip3 install -r requirements.txt
+          pip3 install coverage
+          mkdir ~/.kube
+          cp test/kubeconfig ~/.kube/config
+          make test

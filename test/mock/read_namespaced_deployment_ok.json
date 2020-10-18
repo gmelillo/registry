@@ -1,0 +1,70 @@
+{
+  "kind": "Deployment",
+  "apiVersion": "apps/v1",
+  "metadata": {
+    "name": "registry",
+    "namespace": "docker",
+    "selfLink": "/apis/apps/v1/namespaces/docker/deployments/registry",
+    "uid": "5dc3a8e6-b0ee-11e6-aef0-42010af00229",
+    "resourceVersion": "164489",
+    "generation": 11,
+    "creationTimestamp": "2016-11-22T20:00:50Z",
+    "labels": {
+      "app": "docker-registry"
+    },
+    "annotations": {
+      "deployment.kubernetes.io/revision": "5"
+    }
+  },
+  "spec": {
+    "replicas": 3,
+    "selector": {
+      "matchLabels": {
+        "app": "docker-registry"
+      }
+    },
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "app": "docker-registry"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "registry",
+            "image": "registry:latest",
+            "ports": [
+              {
+                "containerPort": 80,
+                "protocol": "TCP"
+              }
+            ],
+            "resources": {},
+            "terminationMessagePath": "/dev/termination-log",
+            "imagePullPolicy": "IfNotPresent"
+          }
+        ],
+        "restartPolicy": "Always",
+        "terminationGracePeriodSeconds": 30,
+        "dnsPolicy": "ClusterFirst",
+        "securityContext": {}
+      }
+    },
+    "strategy": {
+      "type": "RollingUpdate",
+      "rollingUpdate": {
+        "maxUnavailable": 1,
+        "maxSurge": 1
+      }
+    },
+    "revisionHistoryLimit": 10
+  },
+  "status": {
+    "observedGeneration": 11,
+    "replicas": 3,
+    "updatedReplicas": 3,
+    "availableReplicas": 3
+  }
+}
