@@ -2,6 +2,17 @@
 
 Wrapper of the registry intended to schedule garbage collector run on k8s cluster
 
+## Configuration
+
+| Argument | Environment | Default | Description |
+|---|---|---|---|
+| `namespace` | `GARBAGE_COLLECTOR_NAMESPACE` | `docker`| `namespace having docker registry installed` |
+| `deployment` | `GARBAGE_COLLECTOR_DEPLOYMENT` | `registry` | `docker registry deployment name` |
+| `timeout` | `GARBAGE_COLLECTOR_TIMEOUT` | `43200` | `timeout for running the garbage collector` |
+| `log-format` | `GARBAGE_COLLECTOR_LOG_FORMAT` | `pretty` | `Format of the logs` |
+| `log-level` | `GARBAGE_COLLECTOR_LOG_LEVEL` | `info` | `Format of the logs` |
+| `graceful-period`  | `GARBAGE_COLLECTOR_GRACEFUL_PERIOD` | `120` | `second allowed for the registry to shutdown correctly before kill` |
+
 ## Service Account
 
 The following service account is needed to run the container
