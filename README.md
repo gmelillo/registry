@@ -10,7 +10,7 @@ Wrapper of the registry intended to schedule garbage collector run on k8s cluste
 | `deployment` | `GARBAGE_COLLECTOR_DEPLOYMENT` | `registry` | `docker registry deployment name` |
 | `timeout` | `GARBAGE_COLLECTOR_TIMEOUT` | `43200` | `timeout for running the garbage collector` |
 | `log-format` | `GARBAGE_COLLECTOR_LOG_FORMAT` | `pretty` | `Format of the logs` |
-| `log-level` | `GARBAGE_COLLECTOR_LOG_LEVEL` | `info` | `Format of the logs` |
+| `log-level` | `GARBAGE_COLLECTOR_LOG_LEVEL` | `info` | `Log levele` |
 | `graceful-period`  | `GARBAGE_COLLECTOR_GRACEFUL_PERIOD` | `120` | `second allowed for the registry to shutdown correctly before kill` |
 
 ## Service Account
