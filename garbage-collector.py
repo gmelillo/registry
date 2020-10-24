@@ -19,7 +19,7 @@ def parse_args():
     parser.add_argument('-n', '--namespace', default=os.environ.get('GARBAGE_COLLECTOR_NAMESPACE', 'docker'), 
                         help='namespace having docker registry installed')
     parser.add_argument('-d', '--deployment', default=os.environ.get('GARBAGE_COLLECTOR_DEPLOYMENT', 'registry'), 
-                        help='docker registry eployment name')
+                        help='docker registry deployment name')
     parser.add_argument('-t', '--timeout', default=int(os.environ.get('GARBAGE_COLLECTOR_TIMEOUT', '43200'), base=10), 
                         type=int, help='timeout for running the garbage collector')
     parser.add_argument('--log-format', type=lambda c: jsonlogs.LogFormat[c], choices=list(jsonlogs.LogFormat), 
