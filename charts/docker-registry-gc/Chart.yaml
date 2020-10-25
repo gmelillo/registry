@@ -1,0 +1,9 @@
+apiVersion: v2
+name: docker-registry-gc
+description: A Helm chart that deploy docker registry garbage collector cronjob
+type: application
+version: 0.1.0
+appVersion: 0.1.4
+maintainers:
+  - name: gabriel
+    email: gabriel@melillo.me

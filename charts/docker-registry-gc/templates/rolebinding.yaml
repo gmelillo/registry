@@ -1,0 +1,11 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "docker-registry.serviceAccountName" . }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "docker-registry.serviceAccountName" . }}
+subjects:
+- kind: ServiceAccount
+  name: {{ include "docker-registry.serviceAccountName" . }}
