@@ -1,0 +1,48 @@
+name: Kubernetes Versions
+on:
+  schedule:
+    - cron: "0 1 * * *"
+
+jobs:
+  kube-version:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Setup Python
+      uses: actions/setup-python@master
+      with:
+        python-version: 3.8
+    - name: Kubernetes versions check
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        pip3 install PyYAML requests packaging
+        python3 .github/k8s-release.py
+    - name: Create Pull Request
+      id: cpr
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        committer: GitHub <noreply@github.com>
+        author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+        commit-message: "chore(ci): update kubernetes version to check"
+        branch: "kubernetes_version"
+        signoff: false
+        title: chore(ci) Update kubernetes versions
+        body: |
+          Update kubernetes versions to test
+        labels: |
+          ci
+          automated
+        assignees: gmelillo
+        reviewers: gmelillo
+        draft: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Check outputs
+      run: |
+        echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+        echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
