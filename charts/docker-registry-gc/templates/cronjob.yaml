@@ -43,7 +43,7 @@ spec:
           restartPolicy: {{ .Values.cronjob.restartPolicy }}
           containers:
             - name: {{ .Chart.Name }}
-              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              image: "{{ .Values.image.repository }}:{{ include "docker-registry.tag" . }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
               volumeMounts:
               - name: {{ include "docker-registry.fullname" . }}-config

@@ -15,9 +15,12 @@ A Helm chart that deploy docker registry garbage collector cronjob
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
+| cronjob.concurrencyPolicy | int | `1` |  |
+| cronjob.failedJobsHistoryLimit | int | `1` |  |
 | cronjob.labels | object | `{}` |  |
 | cronjob.restartPolicy | string | `"OnFailure"` |  |
 | cronjob.schedule | string | `"0 4 * * *"` |  |
+| cronjob.successfulJobsHistoryLimit | int | `3` |  |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"Always"` |  |
 | image.repository | string | `"gmelillo/registry"` |  |

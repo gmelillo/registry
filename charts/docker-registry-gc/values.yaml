@@ -12,6 +12,9 @@ cronjob:
   labels: {}
   schedule: "0 4 * * *"
   restartPolicy: OnFailure
+  concurrencyPolicy: 1
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 3
 
 pod:
   labels: {}

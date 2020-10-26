@@ -31,6 +31,17 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
+Image version
+*/}}
+{{- define "docker-registry.tag" -}}
+{{- if .Values.image.tag }}
+{{- .Values.image.tag }}
+{{- else }}
+{{- .Chart.AppVersion }}
+{{- end }}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "docker-registry.labels" -}}
