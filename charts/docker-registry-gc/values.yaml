@@ -12,7 +12,7 @@ cronjob:
   labels: {}
   schedule: "0 4 * * *"
   restartPolicy: OnFailure
-  concurrencyPolicy: 1
+  concurrencyPolicy: "Forbid"
   failedJobsHistoryLimit: 1
   successfulJobsHistoryLimit: 3
 

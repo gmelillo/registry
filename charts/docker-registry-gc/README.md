@@ -15,7 +15,7 @@ A Helm chart that deploy docker registry garbage collector cronjob
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
-| cronjob.concurrencyPolicy | int | `1` |  |
+| cronjob.concurrencyPolicy | string | `"Forbid"` |  |
 | cronjob.failedJobsHistoryLimit | int | `1` |  |
 | cronjob.labels | object | `{}` |  |
 | cronjob.restartPolicy | string | `"OnFailure"` |  |
