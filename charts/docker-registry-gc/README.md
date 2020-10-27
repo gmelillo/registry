@@ -4,28 +4,37 @@
 
 A Helm chart that deploy docker registry garbage collector cronjob
 
+**Homepage:** <https://github.com/gmelillo/registry>
+
 ## Maintainers
 
 | Name | Email | Url |
 | ---- | ------ | --- |
 | gabriel | gabriel@melillo.me |  |
 
+## Source Code
+
+* <https://github.com/gmelillo/registry>
+
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
+| cronjob.annotations | object | `{}` |  |
 | cronjob.concurrencyPolicy | string | `"Forbid"` |  |
 | cronjob.failedJobsHistoryLimit | int | `1` |  |
 | cronjob.labels | object | `{}` |  |
 | cronjob.restartPolicy | string | `"OnFailure"` |  |
 | cronjob.schedule | string | `"0 4 * * *"` |  |
 | cronjob.successfulJobsHistoryLimit | int | `3` |  |
+| envFrom | list | `[]` |  |
+| existingSecret | string | `""` |  |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"Always"` |  |
 | image.repository | string | `"gmelillo/registry"` |  |
 | image.tag | string | `""` |  |
-| imagePullSecrets | list | `[]` |  |
+| imagePullSecrets | object | `{}` |  |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
 | pod.labels | object | `{}` |  |
@@ -33,6 +42,7 @@ A Helm chart that deploy docker registry garbage collector cronjob
 | podSecurityContext | object | `{}` |  |
 | registry.configMap | string | `"registry-config"` |  |
 | resources | object | `{}` |  |
+| secrets | object | `{}` |  |
 | securityContext | object | `{}` |  |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.create | bool | `true` |  |
