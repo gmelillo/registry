@@ -48,24 +48,16 @@ spec:
               volumeMounts:
               - name: {{ include "docker-registry.fullname" . }}-config
                 mountPath: /etc/docker/registry
-              {{- with .Values.env }}
               env:
-              {{ toYaml . | indent 16 }}
+              {{- range $key, $value := .Values.env }}
+              - name: {{ $key }}
+                value: {{ $value | quote }}
               {{- end }}
-              {{- if or .Values.secrets .Values.existingSecret .Values.envFrom }}
               envFrom:
-                - secretRef:
+              - secretRef:
                   name: {{ include "docker-registry.fullname" . }}-secret
-                {{- if or .Values.secrets .Values.existingSecret }}
-                - secretRef:
-                    name: {{ template "docker-registry.secretName" . }}
-                {{- end }}
-                {{- with .Values.envFrom }}
-                  {{- toYaml . | nindent 16 }}
-                {{- end }}
-              {{- end }}
               resources:
-                {{ toYaml .Values.resources | nindent 16 }}
+                {{- toYaml .Values.resources | nindent 16 }}
           volumes:
             - configMap:
                 defaultMode: 420
