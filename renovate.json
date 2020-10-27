@@ -24,6 +24,11 @@
         "helmv3"
       ],
       "extends": [":semanticPrefixChore"]
+    },
+    {
+      "managers": ["golang"],
+      "updateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
     }
   ]
 }
