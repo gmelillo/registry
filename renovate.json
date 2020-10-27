@@ -12,5 +12,18 @@
   ],
   "prHourlyLimit": 0,
   "masterIssue": true,
-  "masterIssueAutoclose": true
+  "masterIssueAutoclose": true,
+  "packageRules": [
+    {
+      "managers": [
+        "npm",
+        "github-actions", 
+        "helm-requirements",
+        "helm-values",
+        "helmfile",
+        "helmv3"
+      ],
+      "extends": [":semanticPrefixChore"]
+    }
+  ]
 }
