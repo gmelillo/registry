@@ -26,7 +26,7 @@
       "extends": [":semanticPrefixChore"]
     },
     {
-      "managers": ["golang"],
+      "managers": ["gomod"],
       "updateTypes": ["minor", "patch", "pin", "digest"],
       "automerge": true
     }
