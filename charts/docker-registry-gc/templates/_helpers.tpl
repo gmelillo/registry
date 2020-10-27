@@ -71,3 +71,14 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Define secret names
+*/}}
+{{- define "docker-registry.secretName" -}}
+{{- if .Values.existingSecret -}}
+{{- .Values.existingSecret -}}
+{{- else -}}
+{{ include "docker-registry.fullname" . }}-secret
+{{- end -}}
+{{- end -}}
