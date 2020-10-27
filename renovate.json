@@ -13,6 +13,28 @@
   "prHourlyLimit": 0,
   "masterIssue": true,
   "masterIssueAutoclose": true,
+  "regexManagers": [
+    {
+      "fileMatch": ["(^|/)Chart.yaml$"],
+      "matchStrings": ["appVersion: '(?<currentValue>.*?)'\n"],
+      "depNameTemplate": "gmelillo/registry",
+      "datasourceTemplate": "docker"
+    },
+    {
+      "fileMatch": ["(^|/)README.md$"],
+      "matchStrings": ["Current chart version is `(?<currentValue>.*?)`\n"],
+      "depNameTemplate": "gmelillo/registry",
+      "datasourceTemplate": "docker"
+    },
+    {
+      "fileMatch": ["(^|/)README.md$"],
+      "matchStrings": [
+        "\\| image.tag \\| string \\| `\"(?<currentValue>.*?)\"` \\|  \\|\n"
+      ],
+      "depNameTemplate": "gmelillo/registry",
+      "datasourceTemplate": "docker"
+    }
+  ],
   "packageRules": [
     {
       "managers": [
@@ -26,8 +48,14 @@
       "extends": [":semanticPrefixChore"]
     },
     {
-      "managers": ["gomod"],
+      "managers": ["gomod", "npm", "github-actions"],
       "updateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
+    },
+    {
+      "packageNames": ["gmelillo/registry"],
+      "updateTypes": ["major", "minor", "patch"],
+      "automergeType": "branch",
       "automerge": true
     }
   ]
