@@ -48,8 +48,14 @@ spec:
               volumeMounts:
               - name: {{ include "docker-registry.fullname" . }}-config
                 mountPath: /etc/docker/registry
+              {{- with .Values.env }}
+              env:
+              {{ toYaml . | indent 16 }}
+              {{- end }}
               {{- if or .Values.secrets .Values.existingSecret .Values.envFrom }}
               envFrom:
+                - secretRef:
+                  name: {{ include "docker-registry.fullname" . }}-secret
                 {{- if or .Values.secrets .Values.existingSecret }}
                 - secretRef:
                     name: {{ template "docker-registry.secretName" . }}

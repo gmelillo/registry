@@ -34,6 +34,8 @@ serviceAccount:
 
 envFrom: []
 
+env: {}
+
 # Provide secrets inline
 secrets: {}
 # or provide the name of an existing secret to be read instead.
