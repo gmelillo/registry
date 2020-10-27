@@ -19,7 +19,7 @@ while url is not None:
     url = json.loads(response.text.encode('utf-8'))['next']
     for r in json.loads(response.text.encode('utf-8'))['results']:
         minor = '.'.join(r['name'][1:].split('.')[:2])
-        if (minor not in versions or version.parse(versions[minor]) < version.parse(r['name'])) and version.parse(r['name']) > version.parse('1.11'):
+        if (minor not in versions or version.parse(versions[minor]) < version.parse(r['name'])) and version.parse(r['name']) >= version.parse('1.12'):
             versions[minor] = r['name']
 
 
