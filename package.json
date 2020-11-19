@@ -7,6 +7,6 @@
       ]
     },
     "devDependencies": {
-      "semantic-release": "17.2.3"
+      "semantic-release": "17.2.4"
     }
   }
