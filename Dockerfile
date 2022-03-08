@@ -1,4 +1,4 @@
-FROM registry:2.8.0 as base
+FROM registry:2.8.1 as base
 
 COPY requirements.txt /app/requirements.txt
 
