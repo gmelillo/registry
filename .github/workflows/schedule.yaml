@@ -23,7 +23,7 @@ jobs:
         python3 .github/k8s-release.py
     - name: Create Pull Request
       id: cpr
-      uses: peter-evans/create-pull-request@v4
+      uses: peter-evans/create-pull-request@v5
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         committer: GitHub <noreply@github.com>
