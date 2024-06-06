@@ -1,1 +1,1 @@
-kubernetes==23.6.0
+kubernetes==30.1.0
